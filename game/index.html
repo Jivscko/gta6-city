@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solara Heat — an open-world crime story</title>
+<meta name="description" content="Solara Heat: an original top-down open-world crime game set in a sun-soaked coastal city. Drive, walk, run missions and outrun the heat.">
+<link rel="stylesheet" href="./css/style.css">
+<link rel="icon" href="data:,">
+</head>
+<body>
+<canvas id="game" tabindex="0" aria-label="Solara Heat game view: walk, drive and take jobs in a sun-soaked coastal city"></canvas>
+
+<div id="ui">
+  <div id="title-screen" class="screen">
+    <div class="title-sun"></div>
+    <div class="title-top">
+      <span class="tag">AN ORIGINAL OPEN-WORLD CRIME STORY</span>
+      <span class="tag dim">SOLARA CITY · 2026</span>
+    </div>
+    <div class="title-main">
+      <p class="title-kicker">Sun. Salt. Bad decisions.</p>
+      <h1 class="title-word">SOLARA<span>HEAT</span></h1>
+      <p class="title-sub">Take the jobs. Take the money. Keep the engine running.</p>
+      <div class="title-menu">
+        <button id="btn-play" class="menu-button primary"><em>01</em> New Game</button>
+        <button id="btn-continue" class="menu-button"><em>02</em> Continue</button>
+        <button id="btn-controls" class="menu-button"><em>03</em> Controls</button>
+        <button id="btn-settings" class="menu-button"><em>04</em> Settings</button>
+      </div>
+      <p id="save-line" class="save-line"></p>
+    </div>
+    <div class="title-foot">
+      <span>WASD move · Mouse aim · E enter vehicle · Esc pause</span>
+      <span class="dim">Mute anywhere with M</span>
+    </div>
+  </div>
+
+  <div id="controls-screen" class="screen panel-screen hidden">
+    <div class="panel wide">
+      <h2>Controls</h2>
+      <div class="controls-grid">
+        <div class="control-group">
+          <h3>On foot</h3>
+          <p><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Walk</span></p>
+          <p><kbd>Shift</kbd><span>Sprint</span></p>
+          <p><kbd>Mouse</kbd><span>Aim</span></p>
+          <p><kbd>Left click</kbd><span>Attack / fire</span></p>
+          <p><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><span>Fists / Pistol / SMG</span></p>
+          <p><kbd>R</kbd><span>Reload</span></p>
+          <p><kbd>E</kbd><span>Enter or exit a vehicle</span></p>
+        </div>
+        <div class="control-group">
+          <h3>Driving</h3>
+          <p><kbd>W</kbd><span>Accelerate</span></p>
+          <p><kbd>S</kbd><span>Brake / reverse</span></p>
+          <p><kbd>A</kbd><kbd>D</kbd><span>Steer</span></p>
+          <p><kbd>Space</kbd><span>Handbrake</span></p>
+          <p><kbd>H</kbd><span>Horn</span></p>
+          <p><kbd>E</kbd><span>Exit the car</span></p>
+          <p><kbd>Mouse wheel</kbd><span>Cycle weapon</span></p>
+        </div>
+        <div class="control-group">
+          <h3>Around the city</h3>
+          <p><kbd>Tab</kbd><span>Mission log</span></p>
+          <p><kbd>Esc</kbd><span>Pause menu</span></p>
+          <p><kbd>Space</kbd><span>Advance dialogue</span></p>
+          <p><kbd>M</kbd><span>Mute sound</span></p>
+          <p><kbd>F5</kbd><span>Quick save (in pause menu too)</span></p>
+        </div>
+      </div>
+      <div class="panel-actions"><button class="menu-button" data-back>Back</button></div>
+    </div>
+  </div>
+
+  <div id="pause-screen" class="screen panel-screen hidden">
+    <div class="panel">
+      <p class="panel-kicker">PAUSED</p>
+      <h2>Solara Heat</h2>
+      <p id="pause-summary" class="panel-lead"></p>
+      <div class="pause-menu">
+        <button id="btn-resume" class="menu-button primary"><em>01</em> Resume</button>
+        <button id="btn-save" class="menu-button"><em>02</em> Save Game</button>
+        <button id="btn-pause-controls" class="menu-button"><em>03</em> Controls</button>
+        <button id="btn-pause-settings" class="menu-button"><em>04</em> Settings</button>
+        <button id="btn-quit" class="menu-button"><em>05</em> Quit to Title</button>
+      </div>
+      <p id="save-note" class="save-line"></p>
+    </div>
+  </div>
+
+  <div id="settings-screen" class="screen panel-screen hidden">
+    <div class="panel">
+      <p class="panel-kicker">OPTIONS</p>
+      <h2>Settings</h2>
+      <div class="setting-row">
+        <div><strong>Sound</strong><small>Procedural synth audio, engine and music</small></div>
+        <button id="toggle-sound" class="switch" role="switch" aria-checked="true"><span></span></button>
+      </div>
+      <div class="setting-row">
+        <div><strong>Screen shake</strong><small>Impact and gunfire camera kick</small></div>
+        <button id="toggle-shake" class="switch" role="switch" aria-checked="true"><span></span></button>
+      </div>
+      <div class="setting-row">
+        <div><strong>Show FPS</strong><small>Frame counter in the corner</small></div>
+        <button id="toggle-fps" class="switch" role="switch" aria-checked="false"><span></span></button>
+      </div>
+      <div class="panel-actions"><button class="menu-button" data-back>Back</button></div>
+    </div>
+  </div>
+
+  <div id="log-screen" class="screen panel-screen hidden">
+    <div class="panel wide">
+      <p class="panel-kicker">MISSION LOG</p>
+      <h2>The job board</h2>
+      <ul id="log-list" class="log-list"></ul>
+      <div class="panel-actions"><button class="menu-button" data-back>Back</button></div>
+    </div>
+  </div>
+
+  <div id="dialogue" class="dialogue hidden">
+    <div class="portrait" id="dialogue-portrait"></div>
+    <div class="dialogue-body">
+      <div class="dialogue-head"><span id="dialogue-speaker">MARISOL</span><span class="dialogue-skip">SPACE / CLICK</span></div>
+      <p id="dialogue-text"></p>
+    </div>
+  </div>
+
+  <div id="hint" class="hint hidden"><kbd>E</kbd><span id="hint-text">Enter vehicle</span></div>
+  <div id="toast" class="toast"></div>
+  <div id="wasted" class="wasted hidden"><h2>WASTED</h2><p id="wasted-line"></p></div>
+  <div id="location-card" class="location-card hidden"><span class="loc-line"></span><h2 id="loc-name"></h2><span id="loc-district"></span></div>
+  <div id="notice" class="notice hidden"></div>
+</div>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
